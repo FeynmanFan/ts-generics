@@ -15,7 +15,6 @@ class StringList implements List<string> {
 
 class NumberList implements List<number> {
     private items: number[] = [];
-
     add(item: number): void {
         this.items.push(item);
     }
@@ -27,15 +26,14 @@ class NumberList implements List<number> {
 
 // Implementation for Dates
 class DateList implements List<Date> {
-  private items: Date[] = [];
+    private items: Date[] = [];
+    add(item: Date): void {
+        this.items.push(item);
+    }
 
-  add(item: Date): void {
-    this.items.push(item);
-  }
-
-  get(index: number): Date  {
+    get(index: number): Date  {
         return this.items[index];
-  }
+    }
 }
 
 const stringList: List<string> = new StringList();
