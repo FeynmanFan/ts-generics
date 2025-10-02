@@ -14,9 +14,23 @@ abstract class TypeList<T extends number | string | Date>{
     }
 }
 
+class Updater<T extends TypeList<any> & { size(): number }> {
+    update(list: T): void {
+        // loop through the list and update the items using the size of the list
+        for (let i = 0; i < list.size(); i++) {
+            // Example update logic: just log the item
+            console.log(`Updating item ${i + 1}: ${JSON.stringify(list.getArray()[i])}`);
+        }
+    }   
+}
+
 class NumberTypeList extends TypeList<number> {
     sum(): number {
         return this.items.reduce((sum, item) => sum + item, 0);
+    }
+
+    size(): number {
+        return this.items.length;
     }
 }
 
@@ -27,6 +41,10 @@ class StringTypeList extends TypeList<string> {
 
     concat(): string {
         return this.items.join('');
+    }
+    
+    size(): number {
+        return this.items.length;
     }
 }
 
@@ -39,24 +57,6 @@ class DateTypeList extends TypeList<Date> {
     earliest(): Date | null {
         if (this.items.length === 0) return null;
         return new Date(Math.min(...this.items.map(date => date.getTime())));
-    }
-}
-
-class User {
-    constructor(public username: string, public password: string) {}
-    toString(): string {
-        return `${this.username} (${this.password})`;
-    }
-}
-
-class UserTypeList extends TypeList<User> {
-    add(item: User): void {
-        super.add(new User(item.username, item.password)); // Create a new User to avoid reference issues       
-    }
-
-    updatePassword(username: string, newPassword: string): boolean {
-        // do stuff
-        return true;
     }
 }
 
@@ -83,3 +83,5 @@ dtList.add(new Date('2023-11-01'));
 console.log(`Date list items: ${JSON.stringify(dtList.getArray())}`); 
 console.log(dtList.earliest()); 
 console.log(`Date list count: ${dtList.count()}`); // 3
+
+const updater = new Updater<DateTypeList>();

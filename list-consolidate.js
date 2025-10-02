@@ -28,6 +28,18 @@ var TypeList = /** @class */ (function () {
     };
     return TypeList;
 }());
+var Updater = /** @class */ (function () {
+    function Updater() {
+    }
+    Updater.prototype.update = function (list) {
+        // loop through the list and update the items using the size of the list
+        for (var i = 0; i < list.size(); i++) {
+            // Example update logic: just log the item
+            console.log("Updating item ".concat(i + 1, ": ").concat(JSON.stringify(list.getArray()[i])));
+        }
+    };
+    return Updater;
+}());
 var NumberTypeList = /** @class */ (function (_super) {
     __extends(NumberTypeList, _super);
     function NumberTypeList() {
@@ -35,6 +47,9 @@ var NumberTypeList = /** @class */ (function (_super) {
     }
     NumberTypeList.prototype.sum = function () {
         return this.items.reduce(function (sum, item) { return sum + item; }, 0);
+    };
+    NumberTypeList.prototype.size = function () {
+        return this.items.length;
     };
     return NumberTypeList;
 }(TypeList));
@@ -88,3 +103,4 @@ dtList.add(new Date('2023-11-01'));
 console.log("Date list items: ".concat(JSON.stringify(dtList.getArray())));
 console.log(dtList.earliest());
 console.log("Date list count: ".concat(dtList.count())); // 3
+var updater = new Updater;
