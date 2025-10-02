@@ -1,59 +1,72 @@
-var NumberTypeList = /** @class */ (function () {
-    function NumberTypeList() {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var TypeList = /** @class */ (function () {
+    function TypeList() {
         this.items = [];
     }
-    NumberTypeList.prototype.add = function (item) {
+    TypeList.prototype.add = function (item) {
         this.items.push(item);
     };
+    TypeList.prototype.getArray = function () {
+        return this.items;
+    };
+    TypeList.prototype.count = function () {
+        return this.items.length;
+    };
+    return TypeList;
+}());
+var NumberTypeList = /** @class */ (function (_super) {
+    __extends(NumberTypeList, _super);
+    function NumberTypeList() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
     NumberTypeList.prototype.sum = function () {
         return this.items.reduce(function (sum, item) { return sum + item; }, 0);
     };
-    NumberTypeList.prototype.getArray = function () {
-        return this.items;
-    };
-    NumberTypeList.prototype.count = function () {
-        return this.items.length;
-    };
     return NumberTypeList;
-}());
-var StringTypeList = /** @class */ (function () {
+}(TypeList));
+var StringTypeList = /** @class */ (function (_super) {
+    __extends(StringTypeList, _super);
     function StringTypeList() {
-        this.items = [];
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     StringTypeList.prototype.add = function (item) {
-        this.items.push(item.toUpperCase());
+        _super.prototype.add.call(this, item.toUpperCase()); // Override to transform to uppercase
     };
     StringTypeList.prototype.concat = function () {
         return this.items.join('');
     };
-    StringTypeList.prototype.getAll = function () {
-        return this.items;
-    };
-    StringTypeList.prototype.count = function () {
-        return this.items.length;
-    };
     return StringTypeList;
-}());
-var DateTypeList = /** @class */ (function () {
+}(TypeList));
+// Date-specific class
+var DateTypeList = /** @class */ (function (_super) {
+    __extends(DateTypeList, _super);
     function DateTypeList() {
-        this.items = [];
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     DateTypeList.prototype.add = function (item) {
-        this.items.push(new Date(item.getTime())); // Create a new Date to avoid reference issues
+        _super.prototype.add.call(this, new Date(item.getTime())); // Create a new Date to avoid reference issues
     };
     DateTypeList.prototype.earliest = function () {
         if (this.items.length === 0)
             return null;
         return new Date(Math.min.apply(Math, this.items.map(function (date) { return date.getTime(); })));
     };
-    DateTypeList.prototype.getArray = function () {
-        return this.items;
-    };
-    DateTypeList.prototype.count = function () {
-        return this.items.length;
-    };
     return DateTypeList;
-}());
+}(TypeList));
 // Usage examples
 var numList = new NumberTypeList();
 numList.add(1);
@@ -65,7 +78,7 @@ console.log("Number list count: ".concat(numList.count())); // 3
 var strList = new StringTypeList();
 strList.add('hello');
 strList.add('world');
-console.log("String list items: ".concat(JSON.stringify(strList.getAll())));
+console.log("String list items: ".concat(JSON.stringify(strList.getArray())));
 console.log(strList.concat());
 console.log("String list count: ".concat(strList.count())); // 2
 var dtList = new DateTypeList();

@@ -1,15 +1,11 @@
-class NumberTypeList {
-    private items: number[] = [];
+abstract class TypeList<T> {
+    protected items: T[] = [];
 
-    add(item: number): void {
+    add(item: T): void {
         this.items.push(item);
     }
 
-    sum(): number {
-        return this.items.reduce((sum, item) => sum + item, 0);
-    }
-
-    getArray(): number[] {
+    getArray(): T[] {
         return this.items;
     }
 
@@ -18,44 +14,31 @@ class NumberTypeList {
     }
 }
 
-class StringTypeList {
-    private items: string[] = [];
+class NumberTypeList extends TypeList<number> {
+    sum(): number {
+        return this.items.reduce((sum, item) => sum + item, 0);
+    }
+}
 
+class StringTypeList extends TypeList<string> {
     add(item: string): void {
-        this.items.push(item.toUpperCase());
+        super.add(item.toUpperCase()); // Override to transform to uppercase
     }
 
     concat(): string {
         return this.items.join('');
     }
-
-    getAll(): string[] {
-        return this.items;
-    }
-
-    count(): number {
-        return this.items.length;
-    }
 }
 
-class DateTypeList {
-    private items: Date[] = [];
-
+// Date-specific class
+class DateTypeList extends TypeList<Date> {
     add(item: Date): void {
-        this.items.push(new Date(item.getTime())); // Create a new Date to avoid reference issues
+        super.add(new Date(item.getTime())); // Create a new Date to avoid reference issues
     }
 
     earliest(): Date | null {
         if (this.items.length === 0) return null;
         return new Date(Math.min(...this.items.map(date => date.getTime())));
-    }
-
-    getArray(): Date[] {
-        return this.items;
-    }
-
-    count(): number {
-        return this.items.length;
     }
 }
 
@@ -71,7 +54,7 @@ console.log(`Number list count: ${numList.count()}`); // 3
 const strList = new StringTypeList();
 strList.add('hello');
 strList.add('world');
-console.log(`String list items: ${JSON.stringify(strList.getAll())}`); 
+console.log(`String list items: ${JSON.stringify(strList.getArray())}`); 
 console.log(strList.concat()); 
 console.log(`String list count: ${strList.count()}`); // 2
 
