@@ -1,4 +1,4 @@
-abstract class TypeList<T> {
+abstract class TypeList<T extends number | string | Date>{
     protected items: T[] = [];
 
     add(item: T): void {
@@ -39,6 +39,24 @@ class DateTypeList extends TypeList<Date> {
     earliest(): Date | null {
         if (this.items.length === 0) return null;
         return new Date(Math.min(...this.items.map(date => date.getTime())));
+    }
+}
+
+class User {
+    constructor(public username: string, public password: string) {}
+    toString(): string {
+        return `${this.username} (${this.password})`;
+    }
+}
+
+class UserTypeList extends TypeList<User> {
+    add(item: User): void {
+        super.add(new User(item.username, item.password)); // Create a new User to avoid reference issues       
+    }
+
+    updatePassword(username: string, newPassword: string): boolean {
+        // do stuff
+        return true;
     }
 }
 
