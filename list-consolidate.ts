@@ -14,7 +14,13 @@ abstract class TypeList<T extends number | string | Date>{
     }
 }
 
-class Updater<T extends TypeList<any> & { size(): number }> {
+type DefaultListType<U extends number | string> = 
+    U extends number ? NumberTypeList :
+    U extends string ? StringTypeList :
+    never;
+
+class Updater<U extends number| string = number,
+T extends TypeList<any> & { size(): number } = DefaultListType<U>> {
     update(list: T): void {
         // loop through the list and update the items using the size of the list
         for (let i = 0; i < list.size(); i++) {
@@ -84,4 +90,4 @@ console.log(`Date list items: ${JSON.stringify(dtList.getArray())}`);
 console.log(dtList.earliest()); 
 console.log(`Date list count: ${dtList.count()}`); // 3
 
-const updater = new Updater<DateTypeList>();
+const updater = new Updater<Date>();

@@ -64,6 +64,9 @@ var StringTypeList = /** @class */ (function (_super) {
     StringTypeList.prototype.concat = function () {
         return this.items.join('');
     };
+    StringTypeList.prototype.size = function () {
+        return this.items.length;
+    };
     return StringTypeList;
 }(TypeList));
 // Date-specific class
@@ -103,4 +106,4 @@ dtList.add(new Date('2023-11-01'));
 console.log("Date list items: ".concat(JSON.stringify(dtList.getArray())));
 console.log(dtList.earliest());
 console.log("Date list count: ".concat(dtList.count())); // 3
-var updater = new Updater;
+var updater = new Updater();
